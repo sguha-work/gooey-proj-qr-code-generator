@@ -2,11 +2,12 @@
 import { useLayoutEffect } from "react";
 import { SERVER_URL } from "../../constants/common.constant";
 import QrPromptFormComponent from "./qr-prompt-form.component";
-import { Subject_Generate_QR$ } from "../../subjects/generate-qr.behavior-subject";
-export default function Drag() {
+import "./drag.component.css";
+
+export default function Drag({output}) {
   useLayoutEffect(()=>{
-    
-  },[])
+    console.log("images",output && output.output && output.output.output_images && output.output.output_images)
+  },[output])
   return (
     <div>
     <link rel="stylesheet" href="https://gooey.ai/build/_assets/index-DZ2N4QTU.css"></link>
@@ -45,14 +46,19 @@ export default function Drag() {
             <div className="px-4 md:w-6/12 w-full">
               <div className="border border-slate-300 rounded-lg">
                 <div className="py-3 px-5 rounded-t-lg bg-slate-100">
-                  {/* {selectedFile && (
+                  {output && output.output && output.output.output_images && output.output.output_images[0] &&(
                     <img
-                      src={URL.createObjectURL(selectedFile)}
+                      src={output.output.output_images[0]}
                       alt="Uploaded Image"
                       className="w-18px h-18px"
                     />
-                  )} */}
-                  {/* <img src={leftAndRightImageURL.image2} alt="result" /> */}
+                  ) || (
+                    <img
+                      src="src/assets/Output.png"
+                      alt="Uploaded Image"
+                      className="w-18px h-18px output"
+                    />
+                  )}
                   <h3 className="mb-1 text-lg font-semibold leading-none">
                     User
                   </h3>
