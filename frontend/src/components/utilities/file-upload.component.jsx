@@ -1,16 +1,15 @@
-import { useState } from "react";
+import { useState, useId } from "react";
 import Frame from "./../../assets/Frame.svg";
 import { SERVER_URL } from "../../constants/common.constant";
 import { Subject_ShowModal$ } from "../../subjects/modal.behavior-subject";
 import { Subject_FileUploaded$ } from "../../subjects/file.behavior-subject";
-import Modal from "./modal.component";
-function FileUploadComponent() {
+import { Subject_ImageUploaded$ } from "../../subjects/image.behavior-subject";
+import { Subject_ExistingQRFileUploaded$ } from "../../subjects/file.behavior-subject";
+function FileUploadComponent({ type }) {
   const [dragging, setDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
   const [uploadProgress, setUploadProgress] = useState(0);
-  const [outputImageUrl, setOutputImageUrl] = useState(null);
-  const [processing, setProcessing] = useState(false);
-
+  const id = useId();
   const handleDragEnter = (e) => {
     e.preventDefault();
     setDragging(true);
@@ -33,16 +32,46 @@ function FileUploadComponent() {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0]; console.log({ file });
-    setSelectedFile(file);
-    uploadFile(file);
+    const file = e.target.files[0];
+    let flag = false;
+    if (type == "img") {
+      if (file.name.toLowerCase().indexOf("png") != -1 || file.name.toLowerCase().indexOf("jpg") != -1 || file.name.toLowerCase().indexOf("jpeg") != -1) {
+        flag = true;
+      }
+    } else if (type == "file") {
+      if (file.name.toLowerCase().indexOf("png") != -1 || file.name.toLowerCase().indexOf("jpg") != -1 || file.name.toLowerCase().indexOf("jpeg") != -1 || file.name.toLowerCase().indexOf("pdf") != -1) {
+        flag = true;
+      }
+    } else if (type == "qr") {
+      if (file.name.toLowerCase().indexOf("png") != -1 || file.name.toLowerCase().indexOf("jpg") != -1 || file.name.toLowerCase().indexOf("jpeg") != -1) {
+        flag = true;
+      }
+    }
+    if (flag) {
+      setSelectedFile(file);
+      uploadFile(file);
+    } else {
+      alert("invalid file");
+    }
   };
 
   const uploadFile = (file) => {
     const formData = new FormData();
     formData.append("file", file);
     Subject_ShowModal$.next(true);
-    fetch(`${SERVER_URL}/file/upload`, {
+    let url = "";
+    switch (type) {
+      case "img":
+        url = `${SERVER_URL}/image/upload`;
+        break;
+      case "qr":
+        url = `${SERVER_URL}/image/upload`;
+        break;
+      case "file":
+        url = `${SERVER_URL}/file/upload`;
+        break;
+    }
+    fetch(url, {
       method: "POST",
       body: formData,
       // Update progress bar
@@ -57,7 +86,18 @@ function FileUploadComponent() {
         if (response.ok) {
           let output = await response.json();
           Subject_ShowModal$.next(false);
-          Subject_FileUploaded$.next(output.data);// sending the data for image parsing
+          switch (type) {
+            case "img":
+              Subject_ImageUploaded$.next(output.data);
+              break;
+            case "qr":
+              Subject_ExistingQRFileUploaded$.next(output.data);
+              break;
+            case "file":
+              Subject_FileUploaded$.next(output.data);
+              break;
+          }
+
           return output;
         } else {
           console.error("Upload failed");
@@ -73,52 +113,6 @@ function FileUploadComponent() {
       });
   };
 
-  // const handleUpload = () => {
-  //   if (!selectedFile) {
-  //     return;
-  //   }
-
-  //   const formData = new FormData();
-  //   formData.append("file", selectedFile);
-
-  //   // Set upload progress to 0 initially
-  //   setUploadProgress(0);
-  //   setProcessing(true);
-
-  //   fetch("http://localhost:4000/image", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       input_image:
-  //         "https://storage.googleapis.com/dara-c1b52.appspot.com/daras_ai/media/f68feb16-5925-11ed-83cc-02420a0000c8/Image3.jpg",
-  //       text_prompt: "make the picture black and white",
-  //     }),
-  //   })
-  //     .then((response) => {
-  //       if (response.ok) {
-  //         return response.json();
-  //       } else {
-  //         console.error("Image processing failed");
-  //         throw new Error("Image processing failed");
-  //       }
-  //     })
-  //     .then((result) => {
-
-
-  //       const outputImageUrl = result.data.output.output_images[0];
-  //       setOutputImageUrl(outputImageUrl);
-
-  //       setUploadProgress(null);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error processing image:", error);
-  //     })
-  //     .finally(() => {
-  //       setProcessing(false);
-  //     });
-  // };
 
   const dragAreaStyle = {
     marginTop: "1.5rem",
@@ -134,7 +128,7 @@ function FileUploadComponent() {
 
         <div className="flex items-center justify-center w-full">
           <label
-            htmlFor="dropzone-file"
+            htmlFor={"dropzone-file" + id}
             className="flex flex-col items-center justify-center p-10 w-full rounded-lg cursor-pointer bg-white shadow-[0px_100px_60px_-70px_rgba(19,15,48,0.1)]"
             onDragEnter={handleDragEnter}
             onDragLeave={handleDragLeave}
@@ -156,13 +150,13 @@ function FileUploadComponent() {
               </p>
 
               <input
-                id="dropzone-file"
+                id={"dropzone-file" + id}
                 type="file"
                 className="hidden"
                 onChange={handleFileChange}
               />
               <div className="flex ">
-                <div className="w-6/12">
+                <div className="w-6/12 file">
                   {selectedFile && (
                     <div className="mb-5 max-w-48 mx-auto flex justify-center items-center">
                       <img
@@ -173,31 +167,10 @@ function FileUploadComponent() {
                     </div>
                   )}
                 </div>
-                <div className="w-6/12">
-                  {outputImageUrl && (
-                    <div className="flex justify-center mt-4">
-                      <img
-                        src={outputImageUrl}
-                        alt="Output"
-                        className="max-w-[300px]"
-                        placeholder="Result"
-                      />
-                    </div>
-                  )}
-                </div>
               </div>
               <p className="text-xs text-gray-500 dark:text-gray-400">
                 File must be JPEG, JPG, or PNG or PDF and up to 40MB
               </p>
-              {/* <div className="flex justify-center">
-              <button
-                className="mt-4 bg-black text-white rounded px-4 py-2"
-                onClick={handleUpload}
-                disabled={processing}
-              >
-                {processing ? "Processing..." : "Upload Image"}
-              </button>
-            </div> */}
 
               {uploadProgress > 0 && (
                 <div className="mt-4 w-full">

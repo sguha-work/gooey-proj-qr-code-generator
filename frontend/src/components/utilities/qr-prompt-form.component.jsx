@@ -1,12 +1,10 @@
-import React, { useLayoutEffect, useRef, useState } from 'react'
+import React, { memo, useLayoutEffect, useRef, useState } from 'react'
 import { Subject_Generate_QR$, Subject_ReGenerate_QR$ } from '../../subjects/generate-qr.behavior-subject';
-import ImageUploadComponent from './image-upload.component';
 import { Subject_ImageUploaded$ } from '../../subjects/image.behavior-subject';
 import FileUploadComponent from './file-upload.component';
 import { Subject_ExistingQRFileUploaded$, Subject_FileUploaded$ } from '../../subjects/file.behavior-subject';
-import ExistingQRUploadComponent from './existing-qr-upload.component';
 import { Subject_ShowModal$ } from '../../subjects/modal.behavior-subject';
-function QrPromptFormComponent() {
+function Component() {
     const moreContactFieldsDOM = useRef(null);
     const promptTextAreaDOM = useRef(null);
     const qrCodeDataDOM = useRef(null);
@@ -17,9 +15,9 @@ function QrPromptFormComponent() {
     const phoneDOM = useRef(null);
     const photoURL = useRef(null);
     const [type, setType] = useState(1);
-    let mediaSource = "";
-    let fileSource = "";
-    let existingQR = "";
+    const mediaSource = useRef("");
+    const fileSource = useRef("");
+    const existingQR = useRef("");
     const setFormType = (type) => {
         setType(type);
     }
@@ -30,22 +28,23 @@ function QrPromptFormComponent() {
             moreContactFieldsDOM.current.style.display = 'none';
         }
     }
-    const submit = () => {
-        const promptText = promptTextAreaDOM&&promptTextAreaDOM.current&&promptTextAreaDOM.current.value?promptTextAreaDOM.current.value:"";
-        const qrCodeData = qrCodeDataDOM&&qrCodeDataDOM.current&&qrCodeDataDOM.current.value?qrCodeDataDOM.current.value:"";
+    const submit = (event) => {
+        event.preventDefault();
+        const promptText = promptTextAreaDOM && promptTextAreaDOM.current && promptTextAreaDOM.current.value ? promptTextAreaDOM.current.value : "";
+        const qrCodeData = qrCodeDataDOM && qrCodeDataDOM.current && qrCodeDataDOM.current.value ? qrCodeDataDOM.current.value : "";
         let payload;
         switch (type) {
             case 1:
                 payload = {
                     "qr_code_data": qrCodeData,
-                    "image_prompt":(mediaSource != "") ? mediaSource : null,
+                    "image_prompt": (mediaSource.current != "") ? mediaSource.current : null,
                     "text_prompt": promptText,
                 }
                 break;
             case 2:
                 payload = {
                     "qr_code_data": qrCodeData,
-                    "qr_code_input_image":  (existingQR != "") ? existingQR : null,
+                    "qr_code_input_image": (existingQR != "") ? existingQR : null,
                     "qr_code_vcard": {
                         "tel": "+919830612244",
                         "impp": null,
@@ -76,8 +75,8 @@ function QrPromptFormComponent() {
                         "honorific_suffixes": null,
                         "comma_separated_categories": null
                     },
-                    "image_prompt": (midiaSource != "") ? midiaSource : null,
-                    "qr_code_file": (midiaSource != "") ? midiaSource : null,
+                    "image_prompt": (midiaSource.current != "") ? midiaSource.current : null,
+                    "qr_code_file": (midiaSource.current != "") ? midiaSource.current : null,
                     "use_url_shortener": true,
                     "text_prompt": promptText,
                     "negative_prompt": "ugly, disfigured, low quality, blurry, nsfw, text, words",
@@ -112,43 +111,42 @@ function QrPromptFormComponent() {
                 };
                 break;
             case 3:
-                
+
                 break;
             case 4:
                 payload = {
-                    "qr_code_input_image":  (existingQR != "") ? existingQR : null,
+                    "qr_code_input_image": (existingQR.current != "") ? existingQR.current : null,
                     "text_prompt": promptText,
-                    "image_prompt":(mediaSource != "") ? mediaSource : null,
+                    "image_prompt": (mediaSource.current != "") ? mediaSource.current : null,
                 }
                 break;
         }
-
-        Subject_Generate_QR$.next(payload);
+        payload && Subject_Generate_QR$.next(payload);
         Subject_ShowModal$.next(true);
     }
     useLayoutEffect(() => {
         Subject_ReGenerate_QR$.subscribe((data) => {
             data && submit();
         });
-        Subject_ImageUploaded$.subscribe((data) => {
+        Subject_ImageUploaded$.asObservable().subscribe((data) => {
             if (data) {
-                mediaSource = data.mediaSource;
+                mediaSource.current = data.mediaSource;
             }
         });
-        Subject_FileUploaded$.subscribe((data) => {
+        Subject_FileUploaded$.asObservable().subscribe((data) => {
             if (data) {
-                fileSource = data.mediaSource;
+                fileSource.current = data.mediaSource;
             }
         });
-        Subject_ExistingQRFileUploaded$.subscribe((data) => {
+        Subject_ExistingQRFileUploaded$.asObservable().subscribe((data) => {
             if (data) {
-                existingQR = data.mediaSource;
+                existingQR.current = data.mediaSource;
             }
         });
     }, []);
     return (
         <div className="px-4 md:w-6/12 w-full">
-        
+
             <div className="col-lg-7 col-12">
                 <div className="gui-input gui-input-textarea">
                     <label>
@@ -177,7 +175,7 @@ function QrPromptFormComponent() {
                 </div>
                 <button
                     type="submit"
-                    className={"btn btn-theme btn-primary replicate-nav"+(type==1 ? 'active' : '')}
+                    className={"btn btn-theme btn-primary replicate-nav" + (type == 1 ? 'active' : '')}
                     value="yes"
                     name="tab-__qr_code_source-qr_code_data"
                     onClick={setFormType.bind({}, 1)}
@@ -188,7 +186,7 @@ function QrPromptFormComponent() {
                 </button>
                 <button
                     type="submit"
-                    className={"btn btn-theme btn-primary replicate-nav"+(type==2 ? 'active' : '')}
+                    className={"btn btn-theme btn-primary replicate-nav" + (type == 2 ? 'active' : '')}
                     value="yes"
                     name="tab-__qr_code_source-qr_code_vcard"
                     onClick={setFormType.bind({}, 2)}
@@ -199,7 +197,7 @@ function QrPromptFormComponent() {
                 </button>
                 <button
                     type="submit"
-                    className={"btn btn-theme btn-primary replicate-nav"+(type==3 ? 'active' : '')}
+                    className={"btn btn-theme btn-primary replicate-nav" + (type == 3 ? 'active' : '')}
                     value="yes"
                     name="tab-__qr_code_source-qr_code_file"
                     onClick={setFormType.bind({}, 3)}
@@ -210,7 +208,7 @@ function QrPromptFormComponent() {
                 </button>
                 <button
                     type="submit"
-                    className={"btn btn-theme btn-primary replicate-nav"+(type==4 ? 'active' : '')}
+                    className={"btn btn-theme btn-primary replicate-nav" + (type == 4 ? 'active' : '')}
                     value="yes"
                     name="tab-__qr_code_source-qr_code_input_image"
                     onClick={setFormType.bind({}, 4)}
@@ -366,12 +364,12 @@ function QrPromptFormComponent() {
                 )}
                 {type == 3 && (
                     <>
-                        <FileUploadComponent></FileUploadComponent>
+                        <FileUploadComponent type="file"></FileUploadComponent>
                     </>
                 )}
                 {type == 4 && (
                     <>
-                        <ExistingQRUploadComponent></ExistingQRUploadComponent>
+                        <FileUploadComponent type="qr"></FileUploadComponent>
                     </>
                 )}
                 <div className="gui-input gui-input-checkbox">
@@ -393,7 +391,7 @@ function QrPromptFormComponent() {
                         "QR-codey" with fewer blocky pixels.
                     </p>
                 </span>
-                <ImageUploadComponent></ImageUploadComponent>
+                <FileUploadComponent type="img"></FileUploadComponent>
                 <div className="row">
                     <div className="col-lg-4 col-4 d-flex justify-content-end align-items-center">
                         <button
@@ -414,5 +412,5 @@ function QrPromptFormComponent() {
         </div>
     )
 }
-
+const QrPromptFormComponent = memo(Component);
 export default QrPromptFormComponent;

@@ -16,8 +16,12 @@ export default function Home() {
     });
     Subject_Generate_QR_Success$.subscribe((data) => {console.log("response data",data);
       Subject_ShowModal$.next(false);
-      if (data && data.data) {
-        setOutput(data.data);
+      if(data&&data.data&&data.data.detail&&data.data.detail.error) {
+        alert(data.data.detail.error);
+      } else {
+        if (data && data.data) {
+          setOutput(data.data);
+        }
       }
     });
   }, []);
