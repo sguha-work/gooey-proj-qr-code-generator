@@ -373,10 +373,25 @@ function QrPromptFormComponent() {
                     </p>
                 </span>
                 <ImageUploadComponent></ImageUploadComponent>
+                <div className="row">
+                    <div className="col-lg-4 col-4 d-flex justify-content-end align-items-center">
+                        <button
+                            type="submit"
+                            className="btn btn-theme btn-primary "
+                            value="yes"
+                            name="--submit-1"
+                            onClick={submit}
+                        >
+                            <span className="gui-html-container gui-md-container">
+                                <p>🏃 Submit</p>
+                            </span>
+                        </button>
+                    </div>
+                </div>
             </div>
 
         </div>
     )
 }
 
-export default QrPromptFormComponent
+export default QrPromptFormComponent;
