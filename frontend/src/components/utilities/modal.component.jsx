@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import ReactDOM from "react-dom";
-// import "./modal.component.css";
+import "./modal.component.css";
 import { Subject_ShowModal$ } from "../../subjects/modal.behavior-subject";
 export default function Modal() {
   const opacityRef = useRef(null);

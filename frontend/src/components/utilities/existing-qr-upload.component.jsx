@@ -130,7 +130,6 @@ function ExistingQRUploadComponent() {
   };
   return (
     <div className="max-w-[1192px] mx-auto mt-10">
-      <Modal></Modal>
       <div className="flex items-center justify-center w-full">
         <label
           htmlFor="dropzone-file"

@@ -5,6 +5,8 @@ import { Subject_ImageUploaded$ } from '../../subjects/image.behavior-subject';
 import FileUploadComponent from './file-upload.component';
 import { Subject_ExistingQRFileUploaded$, Subject_FileUploaded$ } from '../../subjects/file.behavior-subject';
 import ExistingQRUploadComponent from './existing-qr-upload.component';
+import Modal from './modal.component';
+import { Subject_ShowModal$ } from '../../subjects/modal.behavior-subject';
 function QrPromptFormComponent() {
     const moreContactFieldsDOM = useRef(null);
     const promptTextAreaDOM = useRef(null);
@@ -30,81 +32,100 @@ function QrPromptFormComponent() {
         }
     }
     const submit = () => {
-        const promptText = promptTextAreaDOM.current.value;
-        const qrCodeData = qrCodeDataDOM.current.value;
-        const payload = {
-            "qr_code_data": qrCodeData,
-            "qr_code_input_image": (mediaSource != "") ? mediaSource : null,
-            "qr_code_vcard": {
-                "tel": "+919830612244",
-                "impp": null,
-                "kind": null,
-                "note": "",
-                "role": "Intern",
-                "urls": [
-                    "gooey.ai"
-                ],
-                "email": (emailDOM&&emailDOM.current&&emailDOM.current.value.trim() != "") ? emailDOM.current.value.trim() : "",
-                "gender": (genderDOM&&genderDOM.current&&genderDOM.current.value.trim() != "") ? genderDOM.current.value.trim() : "",
-                "address": (addressDOM&&addressDOM.current&&addressDOM.current.value.trim() != "") ? addressDOM.current.value.trim() : "",
-                "language": null,
-                "logo_url": null,
-                "timezone": null,
-                "job_title": null,
-                "photo_url": (photoURL&&photoURL.current&&photoURL.current.value.trim() != "") ? photoURL.current.value.trim() : "",
-                "given_name": null,
-                "family_name": null,
-                "format_name": (nameDOM&&nameDOM.current&&nameDOM.current.value.trim() != "") ? nameDOM.current.value.trim() : "",
-                "birthday_day": null,
-                "calendar_url": null,
-                "middle_names": null,
-                "organization": null,
-                "birthday_year": null,
-                "birthday_month": null,
-                "honorific_prefixes": null,
-                "honorific_suffixes": null,
-                "comma_separated_categories": null
-            },
-            "qr_code_file": (existingQR != "") ? existingQR : null,
-            "use_url_shortener": true,
-            "text_prompt": promptText,
-            "negative_prompt": "ugly, disfigured, low quality, blurry, nsfw, text, words",
-            "image_prompt": "",
-            "image_prompt_controlnet_models": [
-                "sd_controlnet_canny",
-                "sd_controlnet_depth",
-                "sd_controlnet_tile"
-            ],
-            "image_prompt_strength": 0.3,
-            "image_prompt_scale": 1,
-            "image_prompt_pos_x": 0.5,
-            "image_prompt_pos_y": 0.5,
-            "selected_model": "dream_shaper",
-            "selected_controlnet_model": [
-                "sd_controlnet_brightness",
-                "sd_controlnet_tile"
-            ],
-            "output_width": 512,
-            "output_height": 512,
-            "guidance_scale": 9,
-            "controlnet_conditioning_scale": [
-                0.45,
-                0.35
-            ],
-            "num_outputs": 1,
-            "quality": 70,
-            "scheduler": "euler_ancestral",
-            "seed": 1628099939,
-            "obj_scale": 0.65,
-            "obj_pos_x": 0.5,
-            "obj_pos_y": 0.5
-        };
-
+        const promptText = promptTextAreaDOM&&promptTextAreaDOM.current&&promptTextAreaDOM.current.value?promptTextAreaDOM.current.value:"";
+        const qrCodeData = qrCodeDataDOM&&qrCodeDataDOM.current&&qrCodeDataDOM.current.value?qrCodeDataDOM.current.value:"";
+        let payload;
         switch (type) {
             case 1:
-                (promptText != "" && qrCodeData != "") && Subject_Generate_QR$.next(payload);
+                payload = {
+                    "qr_code_data": qrCodeData,
+                    "qr_code_input_image": (mediaSource != "") ? mediaSource : null,
+                    "text_prompt": promptText,
+                }
+                break;
+            case 2:
+                payload = {
+                    "qr_code_data": qrCodeData,
+                    "qr_code_input_image": (mediaSource != "") ? mediaSource : null,
+                    "qr_code_vcard": {
+                        "tel": "+919830612244",
+                        "impp": null,
+                        "kind": null,
+                        "note": "",
+                        "role": "Intern",
+                        "urls": [
+                            "gooey.ai"
+                        ],
+                        "email": (emailDOM && emailDOM.current && emailDOM.current.value.trim() != "") ? emailDOM.current.value.trim() : "",
+                        "gender": (genderDOM && genderDOM.current && genderDOM.current.value.trim() != "") ? genderDOM.current.value.trim() : "",
+                        "address": (addressDOM && addressDOM.current && addressDOM.current.value.trim() != "") ? addressDOM.current.value.trim() : "",
+                        "language": null,
+                        "logo_url": null,
+                        "timezone": null,
+                        "job_title": null,
+                        "photo_url": (photoURL && photoURL.current && photoURL.current.value.trim() != "") ? photoURL.current.value.trim() : "",
+                        "given_name": null,
+                        "family_name": null,
+                        "format_name": (nameDOM && nameDOM.current && nameDOM.current.value.trim() != "") ? nameDOM.current.value.trim() : "",
+                        "birthday_day": null,
+                        "calendar_url": null,
+                        "middle_names": null,
+                        "organization": null,
+                        "birthday_year": null,
+                        "birthday_month": null,
+                        "honorific_prefixes": null,
+                        "honorific_suffixes": null,
+                        "comma_separated_categories": null
+                    },
+                    "qr_code_file": (existingQR != "") ? existingQR : null,
+                    "use_url_shortener": true,
+                    "text_prompt": promptText,
+                    "negative_prompt": "ugly, disfigured, low quality, blurry, nsfw, text, words",
+                    "image_prompt": "",
+                    "image_prompt_controlnet_models": [
+                        "sd_controlnet_canny",
+                        "sd_controlnet_depth",
+                        "sd_controlnet_tile"
+                    ],
+                    "image_prompt_strength": 0.3,
+                    "image_prompt_scale": 1,
+                    "image_prompt_pos_x": 0.5,
+                    "image_prompt_pos_y": 0.5,
+                    "selected_model": "dream_shaper",
+                    "selected_controlnet_model": [
+                        "sd_controlnet_brightness",
+                        "sd_controlnet_tile"
+                    ],
+                    "output_width": 512,
+                    "output_height": 512,
+                    "guidance_scale": 9,
+                    "controlnet_conditioning_scale": [
+                        0.45,
+                        0.35
+                    ],
+                    "num_outputs": 1,
+                    "quality": 70,
+                    "scheduler": "euler_ancestral",
+                    "seed": 1628099939,
+                    "obj_scale": 0.65,
+                    "obj_pos_x": 0.5,
+                    "obj_pos_y": 0.5
+                };
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                payload = {
+                    "qr_code_input_image": (mediaSource != "") ? mediaSource : null,
+                    "text_prompt": promptText,
+                    "qr_code_file": (existingQR != "") ? existingQR : null,
+                }
                 break;
         }
+
+        Subject_Generate_QR$.next(payload);
+        Subject_ShowModal$.next(true);
     }
     useLayoutEffect(() => {
         Subject_ReGenerate_QR$.subscribe((data) => {
@@ -128,6 +149,7 @@ function QrPromptFormComponent() {
     }, []);
     return (
         <div className="px-4 md:w-6/12 w-full">
+        
             <div className="col-lg-7 col-12">
                 <div className="gui-input gui-input-textarea">
                     <label>

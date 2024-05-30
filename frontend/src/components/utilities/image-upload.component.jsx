@@ -3,7 +3,6 @@ import Frame from "./../../assets/Frame.svg";
 import { SERVER_URL } from "./../../constants/common.constant";
 import { Subject_ShowModal$ } from "./../../subjects/modal.behavior-subject";
 import {Subject_ImageUploaded$} from "./../../subjects/image.behavior-subject";
-import Modal from "./modal.component";
 function ImageUploadComponent() {
   const [dragging, setDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -136,7 +135,6 @@ function ImageUploadComponent() {
   };
   return (
     <div className="max-w-[1192px] mx-auto mt-10">
-      <Modal></Modal>
       <div className="flex items-center justify-center w-full">
         <label
           htmlFor="dropzone-file"

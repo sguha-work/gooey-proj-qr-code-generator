@@ -5,6 +5,8 @@ import { useLayoutEffect, useState } from "react";
 import { Subject_Generate_QR$, Subject_Generate_QR_Success$ } from "../../subjects/generate-qr.behavior-subject";
 import { generateQR } from "../../services/qr.service";
 import { createContext } from "react";
+import Modal from "../utilities/modal.component";
+import { Subject_ShowModal$ } from "../../subjects/modal.behavior-subject";
 export default function Home() {
   const OutputContext = createContext();
   const [output, setOutput] = useState("");
@@ -13,6 +15,7 @@ export default function Home() {
       data && generateQR(data);
     });
     Subject_Generate_QR_Success$.subscribe((data) => {
+      Subject_ShowModal$.next(false);
       if (data && data.data) {
         setOutput(data.data);
       }
@@ -20,7 +23,7 @@ export default function Home() {
   }, []);
   return (
     <>
-
+      <Modal></Modal>
       <Navbar />
       <Drag output={output} />
       {/* <ResultCard /> */}
