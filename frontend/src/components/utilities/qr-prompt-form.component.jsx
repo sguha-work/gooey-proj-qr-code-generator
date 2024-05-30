@@ -5,7 +5,6 @@ import { Subject_ImageUploaded$ } from '../../subjects/image.behavior-subject';
 import FileUploadComponent from './file-upload.component';
 import { Subject_ExistingQRFileUploaded$, Subject_FileUploaded$ } from '../../subjects/file.behavior-subject';
 import ExistingQRUploadComponent from './existing-qr-upload.component';
-import Modal from './modal.component';
 import { Subject_ShowModal$ } from '../../subjects/modal.behavior-subject';
 function QrPromptFormComponent() {
     const moreContactFieldsDOM = useRef(null);
@@ -39,7 +38,7 @@ function QrPromptFormComponent() {
             case 1:
                 payload = {
                     "qr_code_data": qrCodeData,
-                    "qr_code_file":(mediaSource != "") ? mediaSource : null,
+                    "image_prompt":(mediaSource != "") ? mediaSource : null,
                     "text_prompt": promptText,
                 }
                 break;
@@ -77,11 +76,11 @@ function QrPromptFormComponent() {
                         "honorific_suffixes": null,
                         "comma_separated_categories": null
                     },
+                    "image_prompt": (midiaSource != "") ? midiaSource : null,
                     "qr_code_file": (midiaSource != "") ? midiaSource : null,
                     "use_url_shortener": true,
                     "text_prompt": promptText,
                     "negative_prompt": "ugly, disfigured, low quality, blurry, nsfw, text, words",
-                    "image_prompt": "",
                     "image_prompt_controlnet_models": [
                         "sd_controlnet_canny",
                         "sd_controlnet_depth",
@@ -119,7 +118,7 @@ function QrPromptFormComponent() {
                 payload = {
                     "qr_code_input_image":  (existingQR != "") ? existingQR : null,
                     "text_prompt": promptText,
-                    
+                    "image_prompt":(mediaSource != "") ? mediaSource : null,
                 }
                 break;
         }
@@ -178,7 +177,7 @@ function QrPromptFormComponent() {
                 </div>
                 <button
                     type="submit"
-                    className="btn btn-theme btn-primary replicate-nav active"
+                    className={"btn btn-theme btn-primary replicate-nav"+(type==1 ? 'active' : '')}
                     value="yes"
                     name="tab-__qr_code_source-qr_code_data"
                     onClick={setFormType.bind({}, 1)}
@@ -189,7 +188,7 @@ function QrPromptFormComponent() {
                 </button>
                 <button
                     type="submit"
-                    className="btn btn-theme btn-primary replicate-nav "
+                    className={"btn btn-theme btn-primary replicate-nav"+(type==2 ? 'active' : '')}
                     value="yes"
                     name="tab-__qr_code_source-qr_code_vcard"
                     onClick={setFormType.bind({}, 2)}
@@ -200,7 +199,7 @@ function QrPromptFormComponent() {
                 </button>
                 <button
                     type="submit"
-                    className="btn btn-theme btn-primary replicate-nav "
+                    className={"btn btn-theme btn-primary replicate-nav"+(type==3 ? 'active' : '')}
                     value="yes"
                     name="tab-__qr_code_source-qr_code_file"
                     onClick={setFormType.bind({}, 3)}
@@ -211,7 +210,7 @@ function QrPromptFormComponent() {
                 </button>
                 <button
                     type="submit"
-                    className="btn btn-theme btn-primary replicate-nav "
+                    className={"btn btn-theme btn-primary replicate-nav"+(type==4 ? 'active' : '')}
                     value="yes"
                     name="tab-__qr_code_source-qr_code_input_image"
                     onClick={setFormType.bind({}, 4)}

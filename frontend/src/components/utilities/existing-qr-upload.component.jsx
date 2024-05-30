@@ -3,7 +3,6 @@ import Frame from "./../../assets/Frame.svg";
 import { SERVER_URL } from "../../constants/common.constant";
 import { Subject_ShowModal$ } from "../../subjects/modal.behavior-subject";
 import { Subject_ExistingQRFileUploaded$ } from "../../subjects/file.behavior-subject";
-import Modal from "./modal.component";
 function ExistingQRUploadComponent() {
   const [dragging, setDragging] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -129,6 +128,7 @@ function ExistingQRUploadComponent() {
     borderStyle: dragging ? "solid" : "dashed",
   };
   return (
+    <qr-upload>
     <div className="max-w-[1192px] mx-auto mt-10">
       <div className="flex items-center justify-center w-full">
         <label
@@ -154,7 +154,6 @@ function ExistingQRUploadComponent() {
             </p>
 
             <input
-              id="dropzone-file"
               type="file"
               className="hidden"
               onChange={handleFileChange}
@@ -171,7 +170,7 @@ function ExistingQRUploadComponent() {
                   </div>
                 )}
               </div>
-              <div className="w-6/12">
+              <div className="w-6/12 x">
                 {outputImageUrl && (
                   <div className="flex justify-center mt-4">
                     <img
@@ -214,6 +213,7 @@ function ExistingQRUploadComponent() {
         </label>
       </div>
     </div>
+    </qr-upload>
   )
 }
 
