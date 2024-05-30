@@ -25,6 +25,15 @@ const Router = {
         }
     },
     'get': {
+        'get': {
+            '/image/get/:id': (request, response, __dirname) => {
+                try {
+                    controller.imageDownload(request, response, __dirname);
+                } catch (e) {
+                    console.log("Error in router", e);
+                }
+            },
+        }
     }
 
 }
