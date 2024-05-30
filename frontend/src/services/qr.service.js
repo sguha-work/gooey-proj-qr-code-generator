@@ -1,9 +1,10 @@
 import { ajax } from 'rxjs/ajax';
 import { map, catchError, of } from 'rxjs';
 import { Subject_Generate_QR_Success$ } from '../subjects/generate-qr.behavior-subject';
+import { SERVER_URL } from '../constants/common.constant';
 export const generateQR = (body)=>{
     const output = ajax({
-        url: 'http://localhost:3000/qr',
+        url: `${SERVER_URL}/qr`,
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
