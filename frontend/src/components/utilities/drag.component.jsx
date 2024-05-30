@@ -3,7 +3,7 @@ import { useLayoutEffect } from "react";
 import { SERVER_URL } from "../../constants/common.constant";
 import QrPromptFormComponent from "./qr-prompt-form.component";
 import "./drag.component.css";
-
+import OutputImage from './../../assets/Output.png';
 export default function Drag({output}) {
   useLayoutEffect(()=>{
     console.log("images",output && output.output && output.output.output_images && output.output.output_images)
@@ -54,7 +54,7 @@ export default function Drag({output}) {
                     />
                   ) || (
                     <img
-                      src="src/assets/Output.png"
+                      src={OutputImage}
                       alt="Uploaded Image"
                       className="w-18px h-18px output"
                     />
