@@ -39,14 +39,14 @@ function QrPromptFormComponent() {
             case 1:
                 payload = {
                     "qr_code_data": qrCodeData,
-                    "qr_code_input_image": (mediaSource != "") ? mediaSource : null,
+                    "qr_code_file":(mediaSource != "") ? mediaSource : null,
                     "text_prompt": promptText,
                 }
                 break;
             case 2:
                 payload = {
                     "qr_code_data": qrCodeData,
-                    "qr_code_input_image": (mediaSource != "") ? mediaSource : null,
+                    "qr_code_input_image":  (existingQR != "") ? existingQR : null,
                     "qr_code_vcard": {
                         "tel": "+919830612244",
                         "impp": null,
@@ -77,7 +77,7 @@ function QrPromptFormComponent() {
                         "honorific_suffixes": null,
                         "comma_separated_categories": null
                     },
-                    "qr_code_file": (existingQR != "") ? existingQR : null,
+                    "qr_code_file": (midiaSource != "") ? midiaSource : null,
                     "use_url_shortener": true,
                     "text_prompt": promptText,
                     "negative_prompt": "ugly, disfigured, low quality, blurry, nsfw, text, words",
@@ -117,9 +117,9 @@ function QrPromptFormComponent() {
                 break;
             case 4:
                 payload = {
-                    "qr_code_input_image": (mediaSource != "") ? mediaSource : null,
+                    "qr_code_input_image":  (existingQR != "") ? existingQR : null,
                     "text_prompt": promptText,
-                    "qr_code_file": (existingQR != "") ? existingQR : null,
+                    
                 }
                 break;
         }

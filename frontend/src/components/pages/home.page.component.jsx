@@ -14,7 +14,7 @@ export default function Home() {
     Subject_Generate_QR$.subscribe((data) => {
       data && generateQR(data);
     });
-    Subject_Generate_QR_Success$.subscribe((data) => {
+    Subject_Generate_QR_Success$.subscribe((data) => {console.log("response data",data);
       Subject_ShowModal$.next(false);
       if (data && data.data) {
         setOutput(data.data);
