@@ -15,6 +15,9 @@ class Controller {
   async qr(request, response) {
     return await commonController.handleRequest(request, service.genQR, response);
   }
+  async imageUpload(request, response) {
+    return await commonController.handleRequest(request, service.imageUpload, response);
+  };
   
 }
 export default Controller;

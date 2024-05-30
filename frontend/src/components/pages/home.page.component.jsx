@@ -13,9 +13,7 @@ export default function Home() {
       data && generateQR(data);
     });
     Subject_Generate_QR_Success$.subscribe((data) => {
-      
       if (data && data.data) {
-        console.log("success", data.data);
         setOutput(data.data);
       }
     });

@@ -29,5 +29,20 @@ class Service {
             return Promise.reject(error);
         }
     }
+    async imageUpload({ host, file }) {
+
+        try {
+            return Promise.resolve({
+                status: StatusCode.post.ok,
+                data: {
+                    mediaName: file.filename,
+                    origMediaName: file.originalname,
+                    mediaSource: `http://${host}/image/get/${file.filename}`
+                }
+            });
+        } catch (error) {
+            return Promise.reject(error);
+        }
+    }
 }
 export default Service;
