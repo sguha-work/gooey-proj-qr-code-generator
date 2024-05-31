@@ -2,8 +2,14 @@
 import { useLayoutEffect, useState } from "react";
 import { SERVER_URL } from "../../constants/common.constant";
 import QrPromptFormComponent from "./qr-prompt-form.component";
-import "./drag.component.css";
-
+import "./styles/drag.component.css";
+import "./styles/1.css";
+import "./styles/2.css";
+import "./styles/3.css";
+import "./styles/4.css";
+import "./styles/5.css";
+import "./styles/6.css";
+import "./styles/7.css";
 import OutputComponent from "./output.component";
 import { Subject_ReGenerate_QR$ } from "../../subjects/generate-qr.behavior-subject";
 export default function Drag({ output }) {
@@ -17,13 +23,6 @@ export default function Drag({ output }) {
   return (
     <div>
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-      <link rel="stylesheet" href="https://gooey.ai/build/_assets/index-DZ2N4QTU.css"></link>
-      <link rel="stylesheet" href="https://gooey.ai/build/_assets/style.min-7XPQOGEF.css"></link>
-      <link rel="stylesheet" href="https://gooey.ai/build/_assets/style.min-43SR3MHG.css"></link>
-      <link rel="stylesheet" href="https://gooey.ai/build/_assets/style.min-IRAFQ6Z6.css"></link>
-      <link rel="stylesheet" href="https://gooey.ai/build/_assets/style.min-XD6ADWGG.css"></link>
-      <link rel="stylesheet" href="https://gooey.ai/build/_assets/custom-CADXOFAJ.css"></link>
-      <link rel="stylesheet" href="https://gooey.ai/build/_assets/app-XK2ME3ZK.css"></link>
 
       <div className="max-w-[1070px] mx-auto text-center">
         <div className="max-w-[730px] mx-auto text-center">
