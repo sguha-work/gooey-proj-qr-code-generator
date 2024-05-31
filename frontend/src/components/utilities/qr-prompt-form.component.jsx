@@ -295,7 +295,7 @@ function Component() {
                                 id="input:__vcard_data__photo_url:undefined"
                                 name="__vcard_data__photo_url"
                                 type="text"
-                                placeholder="https://www.gooey.ai/static/images/logo.png"
+                                placeholder="https://www.xyz.com/images/image.png"
                                 defaultValue=""
                             />
                         </div>
