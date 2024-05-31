@@ -229,10 +229,10 @@ function Component() {
                                 <textarea
                                     ref={qrCodeDataDOM}
                                     name="qr_code_data"
-                                    placeholder="https://www.gooey.ai"
+                                    placeholder="https://www.google.com/"
                                     style={{ maxHeight: "90vh" }}
                                     rows={2}
-                                    defaultValue={"https://gooey.ai/qr-code"}
+                                    defaultValue={"https://www.google.com/"}
                                 />
                             </div>
                         </div>
