@@ -22,11 +22,11 @@ export default function Footer() {
                     <img src={logo} alt="logo" />
                   </div>
 
-                  <p className="text-lg">Make your pics high resolution - HD, 4k and beyond. Enlarge and sharpen photos for printing and web in a single click.</p>
+                  {/* <p className="text-lg">Make your pics high resolution - HD, 4k and beyond. Enlarge and sharpen photos for printing and web in a single click.</p> */}
               </div>
 
               {/* Shop Now Section */}
-              <div className="lg:w-2/12 md:w-3/12 sm:w-6/12 w-6/12 mb-8 px-8">
+              {/* <div className="lg:w-2/12 md:w-3/12 sm:w-6/12 w-6/12 mb-8 px-8">
                 <div className="block">
                   <h4 className="mb-5 text-xl font-semibold leading-8">Product</h4>
                   <ul>
@@ -36,10 +36,10 @@ export default function Footer() {
                     <li className="mb-5 text-lg"><a href="#" className="hover:text-neutral-400"> image.ai</a></li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
 
               {/* Store Hours Section */}
-              <div className="lg:w-2/12 md:w-3/12 sm:w-6/12 w-6/12 mb-8 px-8">
+              {/* <div className="lg:w-2/12 md:w-3/12 sm:w-6/12 w-6/12 mb-8 px-8">
                 <div className="block time">
                   <h4 className="mb-5 text-xl font-semibold leading-8">Company</h4>
                   <ul>
@@ -48,10 +48,10 @@ export default function Footer() {
                     <li className="mb-5 text-lg font-light"><a href="#" className="hover:text-neutral-400">How to use</a></li>
                   </ul>
                 </div>
-              </div>
+              </div> */}
 
               {/* Contact Us Section */}
-              <div className="lg:w-2/12 md:w-3/12 sm:w-6/12 w-6/12 mb-8 px-8">
+              {/* <div className="lg:w-2/12 md:w-3/12 sm:w-6/12 w-6/12 mb-8 px-8">
                 <div className="block address">
                   <h4 className="mb-5 text-xl font-semibold leading-8">Legal</h4>
                   <ul>
@@ -60,11 +60,11 @@ export default function Footer() {
                     <li className="mb-5 text-lg"><a href="#" className="hover:text-neutral-400">Privacy policy</a></li>
                     <li className="mb-5 text-lg"><a href="#" className="hover:text-neutral-400">Master service agreement</a></li>
                   </ul>
-                  <ul className="social-icon">{/* Your social media links */}</ul>
+                  <ul className="social-icon"></ul>
                 </div>
-              </div>
+              </div> */}
 
-              <div className="lg:w-2/12 md:w-3/12 sm:w-6/12 w-6/12 mb-8 px-8">
+              {/* <div className="lg:w-2/12 md:w-3/12 sm:w-6/12 w-6/12 mb-8 px-8">
                 <div className="block address">
                   <h4 className="mb-5 text-xl font-semibold leading-8">Community</h4>
                   <ul>
@@ -73,9 +73,9 @@ export default function Footer() {
                     <li className="mb-5 text-lg"><a href="#" className="hover:text-neutral-400">Twitter</a></li>
                     <li className="mb-5 text-lg"><a href="#" className="hover:text-neutral-400">Youtube</a></li>
                   </ul>
-                  <ul className="social-icon">{/* Your social media links */}</ul>
+                  <ul className="social-icon"></ul>
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
